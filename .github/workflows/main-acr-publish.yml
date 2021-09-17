@@ -1,0 +1,21 @@
+name: Publish to ACR
+
+on:
+  push:
+    branches: [ 'main' ]
+  
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_URL }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - run: |
+          docker build -t ${{ secrets.ACR_URL }}/strive-bot:latest .
+          docker push ${{ secrets.ACR_URL }}/strive-bot:latest
