@@ -40,16 +40,17 @@ namespace StriveBot.Modules
 
             public CommandDoc(char prefix, CommandInfo command)
             {
-                var bangs = command.Aliases
+                var names = command.Aliases
                     .Select(x => $"{prefix}{x}");
-
+                var altNames = ""; //string.Join(' ', names.Skip(1));
                 var parameters = string.Join(' ', command.Parameters.Select(p => $"<{p}>"));
-                Signature = $"{bangs.First()} {parameters}";
+                var summaryText = command.Summary ?? "No summary available";
+                
+                Signature = $"{names.First()} {parameters}";
 
-                var altNames = ""; //string.Join(' ', bangs.Skip(1));
                 Summary = string.IsNullOrWhiteSpace(altNames)
-                    ? command.Summary
-                    : $"Alternatively: {altNames}\n{command.Summary}";
+                    ? summaryText
+                    : $"Alternatively: {altNames}\n{summaryText}";
             }
         }
     }
