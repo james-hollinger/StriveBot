@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+
 namespace StriveBot.Characters
 {
-    public class Leo :Character
+    public class Leo : Character
     {
-        
+        public override string FullName => "Leo Whitefang";
+
+        public override IEnumerable<string> Names => new[] { "le", "leo-whitefang", "leo" };
     }
 }

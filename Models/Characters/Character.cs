@@ -1,15 +1,10 @@
+using System.Collections.Generic;
+
 namespace StriveBot.Characters
 {
     public abstract class Character
     {
-        public static Character Parse(string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public static CharacterName ParseName(string name)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract string FullName { get; }
+        public abstract IEnumerable<string> Names { get; }
     }
 }

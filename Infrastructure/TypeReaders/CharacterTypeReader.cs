@@ -1,22 +1,25 @@
-using Discord;
 using Discord.Commands;
-using StriveBot.Characters;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace StriveBot.TypeReaders
+using StriveBot.Services;
+
+namespace StriveBot.Infrastructure.TypeReaders
 {
     public class CharacterTypeReader : TypeReader
     {
         public override Task<TypeReaderResult> ReadAsync(ICommandContext context, string input, IServiceProvider services)
         {
-            var character = Character.Parse(input);
+            var character = services.GetRequiredService<CharacterService>()
+                .ParseName(input);
+
             if (character != null)
             {
                 return Task.FromResult(TypeReaderResult.FromSuccess(character));
             }
 
-            return Task.FromResult(TypeReaderResult.FromError(CommandError.ParseFailed, $"Could not recognize character {input}."));
+            return Task.FromResult(TypeReaderResult.FromError(CommandError.ParseFailed, $"Could not recognize character name {input}."));
         }
     }
 }

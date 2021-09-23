@@ -1,13 +1,16 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using System.Linq;
+using System.Threading.Tasks;
+
+using StriveBot.Services;
 
 namespace StriveBot.Modules
 {
     [Group("help")]
     public class HelpModule : ModuleBase<SocketCommandContext>
     {
+        public CharacterService CharacterService { get; set; }
         public CommandService CommandService { get; set; }
         public Configuration Configuration { get; set; }
 
@@ -23,14 +26,28 @@ namespace StriveBot.Modules
                 builder.AddField(doc.Signature, doc.Summary);
             }
 
-            await ReplyAsync("Here's a list of commands: ", false, builder.Build());
+            await ReplyAsync("Here's a list of commands:", false, builder.Build());
         }
 
         [Command("version")]
         [Summary("What Strive patch is the bot up-to-date with?")]
         public async Task VersionAsync()
         {
-            await ReplyAsync("1");
+            await ReplyAsync("not done yet ;)");
+        }
+
+        [Command("characters")]
+        [Summary("Display Characters and their Aliases")]
+        public async Task CharactersAsync()
+        {
+            var builder = new EmbedBuilder();
+
+            foreach (var character in CharacterService.GetCharacterAliasLookup())
+            {
+                builder.AddField(character.Key, string.Join(", ", character));
+            }
+
+            await ReplyAsync("Characters can be referenced by their full names (e.g \"anji mito\") or any of these aliases:", false, builder.Build());
         }
 
         private class CommandDoc
@@ -45,7 +62,7 @@ namespace StriveBot.Modules
                 var altNames = ""; //string.Join(' ', names.Skip(1));
                 var parameters = string.Join(' ', command.Parameters.Select(p => $"<{p}>"));
                 var summaryText = command.Summary ?? "No summary available";
-                
+
                 Signature = $"{names.First()} {parameters}";
 
                 Summary = string.IsNullOrWhiteSpace(altNames)

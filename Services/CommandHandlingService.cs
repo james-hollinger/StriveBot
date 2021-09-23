@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using StriveBot.Characters;
-using StriveBot.TypeReaders;
+using StriveBot.Infrastructure.TypeReaders;
 
 namespace StriveBot.Services
 {

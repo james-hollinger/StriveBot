@@ -54,6 +54,7 @@ namespace StriveBot
                 .Build();
 
             return new ServiceCollection()
+                .AddSingleton<CharacterService>()
                 .AddSingleton<CommandHandlingService>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<Configuration>(config.Get<Configuration>())
