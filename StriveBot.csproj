@@ -5,7 +5,6 @@
     <UserSecretsId>138c6265-2333-472d-864f-bdf270739d9e</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <!-- <PackageReference Include="Discord.Net" Version="2.4.0"/> -->
     <PackageReference Include="Discord.Net.Labs" Version="3.0.4"/>
     <PackageReference Include="Discord.Net.Commands" Version="2.4.0"/>
     <PackageReference Include="Discord.Net.WebSocket" Version="2.4.0"/>
