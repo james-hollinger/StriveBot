@@ -67,6 +67,7 @@ namespace StriveBot.Services
             var errorMessage = result.Error.Value switch
             {
                 CommandError.BadArgCount => "Too many arguments to perform the command. Try using quotes or removing spaces.",
+                CommandError.ParseFailed => $"Error when parsing command. {result.ErrorReason}",
                 _ => $"error: {result}"
             };
 
