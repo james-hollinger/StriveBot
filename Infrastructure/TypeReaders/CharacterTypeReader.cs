@@ -19,7 +19,7 @@ namespace StriveBot.Infrastructure.TypeReaders
                 return Task.FromResult(TypeReaderResult.FromSuccess(character));
             }
 
-            return Task.FromResult(TypeReaderResult.FromError(CommandError.ParseFailed, $"Could not recognize character name {input}."));
+            return Task.FromResult(TypeReaderResult.FromError(CommandError.ParseFailed, $"Could not recognize character name \"{input}\"."));
         }
     }
 }
