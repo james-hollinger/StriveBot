@@ -1,3 +1,4 @@
+using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 
@@ -15,14 +16,14 @@ namespace StriveBot.Modules
         [Summary("URL of the Dustloop Wiki")]
         public async Task WikiInfoAsync()
         {
-            await ReplyAsync(_dustloopWiki);
+            await ReplyWithEmbeddedUrlAsync("Dustloop Wiki", _dustloopWiki);
         }
 
         [Command("jubei")]
         [Summary("URL of the Dustloop Wiki page for Jubei from BB:CF")]
         public async Task JubeiInfoAsync()
         {
-            await ReplyAsync("http://www.dustloop.com/wiki/index.php?title=BBCF/Jubei");
+            await ReplyWithEmbeddedUrlAsync("Jubei", "http://www.dustloop.com/wiki/index.php?title=BBCF/Jubei");
         }
 
         [Command]
@@ -30,7 +31,14 @@ namespace StriveBot.Modules
         public async Task CharacterInfoAsync(Character character)
         {
             var escapedName = character.FullName.Replace(" ", "_");
-            await ReplyAsync($"{_dustloopWiki}/{escapedName}");
+            await ReplyWithEmbeddedUrlAsync(character.FullName, $"{_dustloopWiki}/{escapedName}");
+        }
+
+        private async Task ReplyWithEmbeddedUrlAsync(string discription, string url)
+        {
+            var builder = new EmbedBuilder();
+            builder.WithDescription($"[{discription}]({url})");
+            await ReplyAsync("", false, builder.Build());
         }
     }
 }
