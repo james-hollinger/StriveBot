@@ -1,4 +1,3 @@
-using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 
@@ -7,7 +6,7 @@ using StriveBot.Characters;
 namespace StriveBot.Modules
 {
     [Group("wiki")]
-    public class WikiModule : ModuleBase<SocketCommandContext>
+    public class WikiModule : BaseStriveBotModule
     {
         private static string _dustloopWiki = "https://www.dustloop.com/wiki/index.php?title=GGST";
 
@@ -32,13 +31,6 @@ namespace StriveBot.Modules
         {
             var escapedName = character.FullName.Replace(" ", "_");
             await ReplyWithEmbeddedUrlAsync(character.FullName, $"{_dustloopWiki}/{escapedName}");
-        }
-
-        private async Task ReplyWithEmbeddedUrlAsync(string discription, string url)
-        {
-            var builder = new EmbedBuilder();
-            builder.WithDescription($"[{discription}]({url})");
-            await ReplyAsync("", false, builder.Build());
         }
     }
 }

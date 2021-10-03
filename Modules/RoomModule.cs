@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using System.Threading.Tasks;
 
 using StriveBot.Services;
 
@@ -12,7 +8,7 @@ namespace StriveBot.Modules
 {
     [Group("room")]
     [Alias("roomcode")]
-    public class RoomModule : ModuleBase<SocketCommandContext>
+    public class RoomModule : BaseStriveBotModule
     {
         public PersistenceService PersistenceService { get; set; }
 

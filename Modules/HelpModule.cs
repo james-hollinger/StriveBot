@@ -8,7 +8,7 @@ using StriveBot.Services;
 namespace StriveBot.Modules
 {
     [Group("help")]
-    public class HelpModule : ModuleBase<SocketCommandContext>
+    public class HelpModule : BaseStriveBotModule
     {
         public CharacterService CharacterService { get; set; }
         public CommandService CommandService { get; set; }
