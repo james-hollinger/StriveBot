@@ -8,6 +8,7 @@ using StriveBot.Services;
 namespace StriveBot.Modules
 {
     [Group("help")]
+    [Summary("Documentation of StriveBot's commands.")]
     public class HelpModule : BaseStriveBotModule
     {
         public CharacterService CharacterService { get; set; }

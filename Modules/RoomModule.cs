@@ -8,6 +8,7 @@ namespace StriveBot.Modules
 {
     [Group("room")]
     [Alias("roomcode")]
+    [Summary("Set and display room codes.")]
     public class RoomModule : BaseStriveBotModule
     {
         public PersistenceService PersistenceService { get; set; }

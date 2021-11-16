@@ -6,6 +6,7 @@ using StriveBot.Characters;
 namespace StriveBot.Modules
 {
     [Group("wiki")]
+    [Summary("Dustloop wiki links and character information.")]
     public class WikiModule : BaseStriveBotModule
     {
         private static string _dustloopWiki = "https://www.dustloop.com/wiki/index.php?title=GGST";

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace StriveBot.Modules
 {
+    [Summary("Info on upcoming tournaments.")]
     public class TournamentModule : BaseStriveBotModule
     {
         [Command("tournaments")]
