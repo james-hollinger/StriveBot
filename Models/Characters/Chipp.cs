@@ -1,11 +1,8 @@
-using System.Collections.Generic;
+namespace StriveBot.Models.Characters;
 
-namespace StriveBot.Models.Characters
+public class Chipp : Character
 {
-    public class Chipp : Character
-    {
-        public override string FullName => "Chipp Zanuff";
+    public override string FullName => "Chipp Zanuff";
 
-        public override IEnumerable<string> Names => new[] { "ch", "chipp-zanuff", "chipp", "chip" };
-    }
+    public override IEnumerable<string> Names => new[] { "ch", "chipp-zanuff", "chipp", "chip" };
 }

@@ -1,77 +1,74 @@
+namespace StriveBot.Services;
+
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using StriveBot.Models.Characters;
 using StriveBot.Infrastructure.TypeReaders;
 
-namespace StriveBot.Services
+public class CommandHandlingService
 {
-    public class CommandHandlingService
+    private readonly CommandService commandService;
+    private readonly Configuration config;
+    private readonly DiscordSocketClient discordClient;
+    private readonly IServiceProvider services;
+
+    public CommandHandlingService(IServiceProvider services)
     {
-        private readonly CommandService _commandService;
-        private readonly Configuration _config;
-        private readonly DiscordSocketClient _discordClient;
-        private readonly IServiceProvider _services;
+        this.commandService = services.GetRequiredService<CommandService>();
+        this.config = services.GetRequiredService<Configuration>();
+        this.discordClient = services.GetRequiredService<DiscordSocketClient>();
+        this.services = services;
 
-        public CommandHandlingService(IServiceProvider services)
+        this.commandService.CommandExecuted += CommandExecutedAsync;
+        this.discordClient.MessageReceived += this.MessageReceivedAsync;
+    }
+
+    public async Task InitializeAsync()
+    {
+        this.commandService.AddTypeReader(typeof(Character), new CharacterTypeReader());
+        await this.commandService.AddModulesAsync(Assembly.GetEntryAssembly(), this.services);
+    }
+
+    public async Task MessageReceivedAsync(SocketMessage rawMessage)
+    {
+        // Ignore system messages, or messages from other bots
+        if (rawMessage is not SocketUserMessage message
+            || message.Source != MessageSource.User)
         {
-            _commandService = services.GetRequiredService<CommandService>();
-            _config = services.GetRequiredService<Configuration>();
-            _discordClient = services.GetRequiredService<DiscordSocketClient>();
-            _services = services;
-
-            _commandService.CommandExecuted += CommandExecutedAsync;
-            _discordClient.MessageReceived += MessageReceivedAsync;
+            return;
         }
 
-        public async Task InitializeAsync()
+        var argPos = 0;
+        if (!message.HasCharPrefix(this.config.CommandPrefix, ref argPos))
         {
-            _commandService.AddTypeReader(typeof(Character), new CharacterTypeReader());
-            await _commandService.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
+            return;
         }
 
-        public async Task MessageReceivedAsync(SocketMessage rawMessage)
+        await this.commandService.ExecuteAsync(
+            context: new SocketCommandContext(this.discordClient, message),
+            argPos,
+            this.services);
+    }
+
+    public static async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
+    {
+        // command is unspecified when there was a search failure (command not found); we don't care about these errors
+        if (!command.IsSpecified || result.IsSuccess)
         {
-            // Ignore system messages, or messages from other bots
-            if (!(rawMessage is SocketUserMessage message)
-                || message.Source != MessageSource.User)
-            {
-                return;
-            }
-
-            var argPos = 0;
-            if (!message.HasCharPrefix(_config.CommandPrefix, ref argPos))
-            {
-                return;
-            }
-
-            await _commandService.ExecuteAsync(
-                context: new SocketCommandContext(_discordClient, message),
-                argPos,
-                _services);
+            return;
         }
 
-        public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
+        var errorMessage = result.Error!.Value switch
         {
-            // command is unspecified when there was a search failure (command not found); we don't care about these errors
-            if (!command.IsSpecified || result.IsSuccess)
-            {
-                return;
-            }
+            CommandError.BadArgCount => "Too many arguments to perform the command. Try using quotes or removing spaces.",
+            CommandError.ParseFailed => $"Error when parsing command. {result.ErrorReason}",
+            _ => $"error: {result}"
+        };
 
-            var errorMessage = result.Error.Value switch
-            {
-                CommandError.BadArgCount => "Too many arguments to perform the command. Try using quotes or removing spaces.",
-                CommandError.ParseFailed => $"Error when parsing command. {result.ErrorReason}",
-                _ => $"error: {result}"
-            };
-
-            await context.Channel.SendMessageAsync(errorMessage);
-        }
+        await context.Channel.SendMessageAsync(errorMessage);
     }
 }

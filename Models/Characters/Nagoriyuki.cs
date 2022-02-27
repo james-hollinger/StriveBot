@@ -1,11 +1,8 @@
-using System.Collections.Generic;
+namespace StriveBot.Models.Characters;
 
-namespace StriveBot.Models.Characters
+public class Nagoriyuki : Character
 {
-    public class Nagoriyuki : Character
-    {
-        public override string FullName => "Nagoriyuki";
+    public override string FullName => "Nagoriyuki";
 
-        public override IEnumerable<string> Names => new[] { "na", "nago", "名残雪" };
-    }
+    public override IEnumerable<string> Names => new[] { "na", "nago", "名残雪" };
 }

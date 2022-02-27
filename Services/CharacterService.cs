@@ -1,59 +1,55 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace StriveBot.Services;
+
 using System.Reflection;
 
 using StriveBot.Models.Characters;
 
-namespace StriveBot.Services
+public class CharacterService
 {
-    public class CharacterService
+    private Dictionary<string, string> NameMap { get; set; }
+    private Dictionary<string, Character> InstanceMap { get; set; }
+
+    public CharacterService()
     {
-        private Dictionary<string, string> NameMap { get; set; }
-        private Dictionary<string, Character> InstanceMap { get; set; }
+        this.NameMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        this.InstanceMap = new Dictionary<string, Character>(StringComparer.OrdinalIgnoreCase);
 
-        public CharacterService()
+        foreach (var type in Assembly.GetAssembly(typeof(Character))!.GetTypes()
+            .Where(type => type.IsSubclassOf(typeof(Character))
+                && !type.IsAbstract
+                && type.IsClass))
         {
-            NameMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            InstanceMap = new Dictionary<string, Character>(StringComparer.OrdinalIgnoreCase);
+            var character = (Character)Activator.CreateInstance(type)!;
 
-            foreach (Type type in Assembly.GetAssembly(typeof(Character)).GetTypes()
-                .Where(type => type.IsSubclassOf(typeof(Character))
-                    && !type.IsAbstract
-                    && type.IsClass))
+            foreach (var name in character.Names)
             {
-                var character = (Character)Activator.CreateInstance(type);
-
-                foreach (var name in character.Names)
-                {
-                    NameMap.Add(name, character.FullName);
-                }
-
-                InstanceMap.Add(character.FullName, character);
+                this.NameMap.Add(name, character.FullName);
             }
+
+            this.InstanceMap.Add(character.FullName, character);
+        }
+    }
+
+    public Character? ParseName(string name)
+    {
+        if (this.InstanceMap.TryGetValue(name, out var character))
+        {
+            return character;
         }
 
-        public Character ParseName(string name)
+        if (this.NameMap.TryGetValue(name, out var fullName))
         {
-            if (InstanceMap.TryGetValue(name, out var character))
-            {
-                return character;
-            }
-
-            if (NameMap.TryGetValue(name, out var fullName))
-            {
-                return InstanceMap[fullName];
-            }
-            else
-            {
-                return null;
-            }
+            return this.InstanceMap[fullName];
         }
-
-        public ILookup<string, string> GetCharacterAliasLookup()
+        else
         {
-            return NameMap
-                .ToLookup(g => g.Value, g => g.Key);
+            return null;
         }
+    }
+
+    public ILookup<string, string> GetCharacterAliasLookup()
+    {
+        return this.NameMap
+            .ToLookup(g => g.Value, g => g.Key);
     }
 }

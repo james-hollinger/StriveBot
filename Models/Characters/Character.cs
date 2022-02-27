@@ -1,10 +1,7 @@
-using System.Collections.Generic;
+namespace StriveBot.Models.Characters;
 
-namespace StriveBot.Models.Characters
+public abstract class Character
 {
-    public abstract class Character
-    {
-        public abstract string FullName { get; }
-        public abstract IEnumerable<string> Names { get; }
-    }
+    public abstract string FullName { get; }
+    public abstract IEnumerable<string> Names { get; }
 }

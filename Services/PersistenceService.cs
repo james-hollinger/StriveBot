@@ -1,7 +1,6 @@
-namespace StriveBot.Services
+namespace StriveBot.Services;
+
+public class PersistenceService
 {
-    public class PersistenceService
-    {
-        public string RoomCode { get; set; }
-    }
+    public string? RoomCode { get; set; }
 }
