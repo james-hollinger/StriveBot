@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace StriveBot.Characters
+namespace StriveBot.Models.Characters
 {
     public class May : Character
     {

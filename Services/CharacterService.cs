@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using StriveBot.Characters;
+using StriveBot.Models.Characters;
 
 namespace StriveBot.Services
 {
