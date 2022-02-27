@@ -1,7 +1,7 @@
 using Discord.Commands;
 using System.Threading.Tasks;
 
-using StriveBot.Characters;
+using StriveBot.Models.Characters;
 
 namespace StriveBot.Modules
 {
