@@ -5,14 +5,14 @@
     <UserSecretsId>138c6265-2333-472d-864f-bdf270739d9e</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Discord.Net.Labs" Version="3.0.4"/>
-    <PackageReference Include="Discord.Net.Commands" Version="2.4.0"/>
-    <PackageReference Include="Discord.Net.WebSocket" Version="2.4.0"/>
-    <PackageReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2"/>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0"/>
+    <PackageReference Include="Discord.Net" Version="3.3.2" />
+    <PackageReference Include="Discord.Net.Commands" Version="3.3.2" />
+    <PackageReference Include="Discord.Net.WebSocket" Version="3.3.2" />
+    <PackageReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
