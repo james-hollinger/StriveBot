@@ -2,6 +2,7 @@
 
 using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ public class Program
         using var services = ConfigureServices();
         services.GetRequiredService<CommandService>().Log += this.LogAsync;
         await services.GetRequiredService<CommandHandlingService>().InitializeAsync();
+        await services.GetRequiredService<InteractionHandlingService>().InitializeAsync();
 
         var client = services.GetRequiredService<DiscordSocketClient>();
         client.Log += this.LogAsync;
@@ -52,6 +54,8 @@ public class Program
             .AddSingleton(config.Get<Configuration>())
             .AddSingleton<DiscordSocketClient>()
             .AddSingleton<HttpClient>()
+            .AddSingleton<InteractionHandlingService>()
+            .AddSingleton<InteractionService>()
             .AddSingleton<PersistenceService>()
             .BuildServiceProvider();
     }

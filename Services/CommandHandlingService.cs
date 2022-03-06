@@ -49,7 +49,7 @@ public class CommandHandlingService
         }
 
         await this.commandService.ExecuteAsync(
-            context: new SocketCommandContext(this.discordClient, message),
+            new SocketCommandContext(this.discordClient, message),
             argPos,
             this.services);
     }
