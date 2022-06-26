@@ -3,6 +3,7 @@ namespace StriveBot.Modules;
 using Discord;
 using Discord.Commands;
 
+using StriveBot.Infrastructure;
 using StriveBot.Services;
 
 [Group("help")]
@@ -19,7 +20,7 @@ public class HelpModule : BaseStriveBotModule
     {
         var builder = new EmbedBuilder();
 
-        foreach (var command in this.CommandService.Commands)
+        foreach (var command in this.CommandService.Commands.Where(command => !command.Module.Attributes.Contains(new ExcludeFromHelpDocAttribute())))
         {
             var doc = new CommandDoc(this.Configuration.CommandPrefix, command);
             builder.AddField(doc.Signature, doc.Summary);

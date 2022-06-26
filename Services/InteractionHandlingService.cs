@@ -23,11 +23,7 @@ public class InteractionHandlingService
         this.discordClient.SelectMenuExecuted += this.MessageComponentExecutedAsync;
     }
 
-    public async Task InitializeAsync()
-    {
-        await this.interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), this.services);
-        this.discordClient.Ready += async () => await this.interactionService.RegisterCommandsToGuildAsync(this.services.GetRequiredService<Configuration>().GuildId);
-    }
+    public async Task InitializeAsync() => await this.interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), this.services);
 
     private async Task InteractionCreatedAsync(SocketInteraction interaction)
     {

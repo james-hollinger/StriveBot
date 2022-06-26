@@ -48,7 +48,7 @@ public class WillItKillSession
         var description = string.IsNullOrWhiteSpace(this.CurrentRound.Description)
             ? ""
             : $"{this.CurrentRound.Description} : ";
-        description += $"**__{ this.CurrentRound.Headline}__**";
+        description += $"**__{this.CurrentRound.Headline}__**";
 
         return new EmbedBuilder()
             .WithTitle($"Round {this.CurrentRound.RoundNumber}!")
