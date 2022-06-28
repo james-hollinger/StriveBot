@@ -10,7 +10,6 @@ using StriveBot.Infrastructure;
 [ExcludeFromHelpDoc]
 public class AdministrationModule : BaseStriveBotModule
 {
-    public Configuration Configuration { get; set; } = default!;
     public Discord.Interactions.InteractionService InteractionService { get; set; } = default!;
 
     [Command("register-commands")]
